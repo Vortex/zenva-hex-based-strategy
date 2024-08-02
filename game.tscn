@@ -1,5 +1,57 @@
-[gd_scene format=3 uid="uid://cnc10pohva8ie"]
+[gd_scene load_steps=10 format=3 uid="uid://cnc10pohva8ie"]
+
+[ext_resource type="Script" path="res://HexTileMap.cs" id="1_ngyc6"]
+[ext_resource type="Texture2D" uid="uid://ch06xn8euqx6c" path="res://textures/hex_128.png" id="2_12by3"]
+[ext_resource type="Texture2D" uid="uid://chwta0ndifjrj" path="res://textures/hex_overlays.png" id="3_cvdnc"]
+[ext_resource type="Script" path="res://Camera.cs" id="4_7iw6e"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r8362"]
+texture = ExtResource("2_12by3")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_5g6fa"]
+tile_shape = 3
+tile_size = Vector2i(128, 128)
+sources/0 = SubResource("TileSetAtlasSource_r8362")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hvxxb"]
+texture = ExtResource("3_cvdnc")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_guasg"]
+tile_shape = 3
+tile_size = Vector2i(128, 128)
+sources/2 = SubResource("TileSetAtlasSource_hvxxb")
+
+[sub_resource type="TileSet" id="TileSet_4gfv3"]
+tile_shape = 3
+tile_size = Vector2i(128, 128)
 
 [node name="Game" type="Node"]
 
-[node name="HexTileMap" type="TileMapLayer" parent="."]
+[node name="HexTileMap" type="Node2D" parent="."]
+script = ExtResource("1_ngyc6")
+width = 10
+height = 10
+
+[node name="BaseLayer" type="TileMapLayer" parent="HexTileMap"]
+tile_set = SubResource("TileSet_5g6fa")
+
+[node name="HexBordersLayer" type="TileMapLayer" parent="HexTileMap"]
+tile_set = SubResource("TileSet_guasg")
+
+[node name="SelectionOverlay" type="TileMapLayer" parent="HexTileMap"]
+tile_set = SubResource("TileSet_4gfv3")
+
+[node name="Camera" type="Camera2D" parent="."]
+script = ExtResource("4_7iw6e")
