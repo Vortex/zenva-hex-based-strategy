@@ -15,6 +15,10 @@ public partial class Camera : Camera2D
     [Export]
     float minZoom = 0.1f;
 
+    // Mouse states
+    bool mouseWheelScrollingUp = false;
+    bool mouseWheelScrollingDown = false;
+
 
     public override void _PhysicsProcess(double delta)
     {
@@ -37,15 +41,26 @@ public partial class Camera : Camera2D
         }
 
         // Zoom controls
-        if (Input.IsActionPressed("map_zoom_in")) {
+        if (Input.IsActionPressed("map_zoom_in") || mouseWheelScrollingUp) {
             if (this.Zoom < new Vector2(maxZoom, maxZoom))
                 this.Zoom += new Vector2(zoomSpeed, zoomSpeed);
         }
 
-        if (Input.IsActionPressed("map_zoom_out")) {
+        if (Input.IsActionPressed("map_zoom_out") || mouseWheelScrollingDown) {
             if (this.Zoom > new Vector2(minZoom, minZoom))
                 this.Zoom -= new Vector2(zoomSpeed, zoomSpeed);
         }
 
+        if (Input.IsActionJustReleased("mouse_zoom_in"))
+            mouseWheelScrollingUp = true;
+
+        if (!Input.IsActionJustReleased("mouse_zoom_in"))
+            mouseWheelScrollingUp = false;
+
+        if (Input.IsActionJustReleased("mouse_zoom_out"))
+            mouseWheelScrollingDown = true;
+
+        if (!Input.IsActionJustReleased("mouse_zoom_out"))
+            mouseWheelScrollingDown = false;
     }
 }
