@@ -15,6 +15,8 @@ public partial class Camera : Camera2D
     [Export]
     float minZoom = 0.1f;
 
+
+
     // Map boundaries
     float leftBound, rightBound, topBound, bottomBound;
 

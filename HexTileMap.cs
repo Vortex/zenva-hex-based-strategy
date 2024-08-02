@@ -1,5 +1,21 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+
+public enum TerrainType
+{
+    PLAINS, WATER, DESERT, MOUNTAIN, ICE, SHALLOW_WATER, FOREST, BEACH
+}
+
+public class Hex {
+    public readonly Vector2I coordinates;
+    public TerrainType terrainType;
+
+    public Hex(Vector2I coordinates)
+    {
+        this.coordinates = coordinates;
+    }
+} 
 
 public partial class HexTileMap : Node2D
 {
@@ -9,13 +25,20 @@ public partial class HexTileMap : Node2D
     [Export]
     public int height = 60;
 
+    // Map data
     TileMapLayer baseLayer, borderLayer, overlayLayer;
+
+    Dictionary<Vector2I, Hex> mapData;
+   
 
     public override void _Ready()
     {
         baseLayer = GetNode<TileMapLayer>("BaseLayer");
         borderLayer = GetNode<TileMapLayer>("HexBordersLayer");
         overlayLayer = GetNode<TileMapLayer>("SelectionOverlay");
+
+        // Initialize map data
+        mapData = new Dictionary<Vector2I, Hex>();
 
         GenerateTerrain();
     }
