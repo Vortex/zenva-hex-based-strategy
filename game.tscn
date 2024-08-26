@@ -1,9 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://cnc10pohva8ie"]
+[gd_scene load_steps=12 format=3 uid="uid://cnc10pohva8ie"]
 
 [ext_resource type="Script" path="res://HexTileMap.cs" id="1_ngyc6"]
+[ext_resource type="Script" path="res://Game.cs" id="1_pvcgg"]
 [ext_resource type="Texture2D" uid="uid://ch06xn8euqx6c" path="res://textures/hex_128.png" id="2_12by3"]
 [ext_resource type="Texture2D" uid="uid://chwta0ndifjrj" path="res://textures/hex_overlays.png" id="3_cvdnc"]
 [ext_resource type="Script" path="res://Camera.cs" id="4_7iw6e"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nlw15"]
+metadata/_preview_in_3d_space_ = true
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r8362"]
 texture = ExtResource("2_12by3")
@@ -38,11 +42,12 @@ tile_shape = 3
 tile_size = Vector2i(128, 128)
 
 [node name="Game" type="Node"]
+script = ExtResource("1_pvcgg")
+noise = SubResource("FastNoiseLite_nlw15")
 
 [node name="HexTileMap" type="Node2D" parent="."]
 script = ExtResource("1_ngyc6")
-width = 10
-height = 10
+height = 100
 
 [node name="BaseLayer" type="TileMapLayer" parent="HexTileMap"]
 tile_set = SubResource("TileSet_5g6fa")
