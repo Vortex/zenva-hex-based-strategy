@@ -60,6 +60,7 @@ height = 100
 tile_set = SubResource("TileSet_5g6fa")
 
 [node name="HexBordersLayer" type="TileMapLayer" parent="HexTileMap"]
+modulate = Color(1, 1, 1, 0.0980392)
 tile_set = SubResource("TileSet_guasg")
 
 [node name="SelectionOverlay" type="TileMapLayer" parent="HexTileMap"]
