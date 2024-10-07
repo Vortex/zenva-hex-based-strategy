@@ -1,8 +1,21 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class TerrainTileUi : Panel
 {
+	public static Dictionary<TerrainType, string> terrainTypeStrings = new Dictionary<TerrainType, string>
+	{
+		{ TerrainType.PLAINS, "Plains" },
+		{ TerrainType.BEACH, "Beach" },
+		{ TerrainType.DESERT, "Desert" },
+		{ TerrainType.MOUNTAIN, "Mountain" },
+		{ TerrainType.ICE, "Ice" },
+		{ TerrainType.WATER, "Water" },
+		{ TerrainType.SHALLOW_WATER, "Shallow Water" },
+		{ TerrainType.FOREST, "Forest" },
+	};
+
 	// Data hex
 	Hex h = null;
 
@@ -25,6 +38,7 @@ public partial class TerrainTileUi : Panel
 
 		foodLabel.Text = $"Food: {h.food}";
 		productionLabel.Text = $"Production: {h.production}";
+		terrainLabel.Text = $"Terrain: {terrainTypeStrings[h.terrainType]}";
 	}
 
 }
