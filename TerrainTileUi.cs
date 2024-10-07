@@ -16,6 +16,33 @@ public partial class TerrainTileUi : Panel
 		{ TerrainType.FOREST, "Forest" },
 	};
 
+	public static Dictionary<TerrainType, Texture2D> terrainTypeImages = new Dictionary<TerrainType, Texture2D>();
+
+	public static void LoadTerrainImages()
+	{
+		Texture2D plains = ResourceLoader.Load<Texture2D>("res://textures/plains.jpg");
+		Texture2D beach = ResourceLoader.Load<Texture2D>("res://textures/beach.jpg");
+		Texture2D desert = ResourceLoader.Load<Texture2D>("res://textures/desert.jpg");
+		Texture2D mountain = ResourceLoader.Load<Texture2D>("res://textures/mountain.jpg");
+		Texture2D ice = ResourceLoader.Load<Texture2D>("res://textures/ice.jpg");
+		Texture2D ocean = ResourceLoader.Load<Texture2D>("res://textures/ocean.jpg");
+		Texture2D shallow = ResourceLoader.Load<Texture2D>("res://textures/shallow.jpg");
+		Texture2D forest = ResourceLoader.Load<Texture2D>("res://textures/forest.jpg");
+
+		terrainTypeImages = new Dictionary<TerrainType, Texture2D>
+		{
+			{ TerrainType.PLAINS, plains },
+			{ TerrainType.BEACH, beach },
+			{ TerrainType.DESERT, desert },
+			{ TerrainType.MOUNTAIN, mountain },
+			{ TerrainType.ICE, ice },
+			{ TerrainType.WATER, ocean },
+			{ TerrainType.SHALLOW_WATER, shallow },
+			{ TerrainType.FOREST, forest },
+		};
+	}
+
+
 	// Data hex
 	Hex h = null;
 
@@ -36,6 +63,7 @@ public partial class TerrainTileUi : Panel
 	{
 		this.h = h;
 
+		terrainImage.Texture = terrainTypeImages[h.terrainType];
 		foodLabel.Text = $"Food: {h.food}";
 		productionLabel.Text = $"Production: {h.production}";
 		terrainLabel.Text = $"Terrain: {terrainTypeStrings[h.terrainType]}";
