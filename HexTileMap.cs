@@ -11,11 +11,17 @@ public enum TerrainType
 public class Hex
 {
     public readonly Vector2I coordinates;
+
     public TerrainType terrainType;
 
     public Hex(Vector2I coordinates)
     {
         this.coordinates = coordinates;
+    }
+
+    public override string ToString()
+    {
+        return $"Coordinates: ({this.coordinates.X}, {this.coordinates.Y}), Terraint type: {this.terrainType}";
     }
 }
 
@@ -57,6 +63,23 @@ public partial class HexTileMap : Node2D
         GenerateTerrain();
     }
 
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton mouse)
+        {
+            Vector2I mapCoords = baseLayer.LocalToMap(ToLocal(GetGlobalMousePosition()));
+
+            if (mapCoords.X >= 0 && mapCoords.X < width && mapCoords.Y >= 0 && mapCoords.Y < height)
+            {
+                if (mouse.ButtonMask == MouseButtonMask.Left)
+                {
+                    GD.Print(mapData[mapCoords]);
+                }
+
+            }
+
+        }
+    }
     public void GenerateTerrain()
     {
         float[,] noiseMap = new float[width, height];
@@ -131,7 +154,7 @@ public partial class HexTileMap : Node2D
 
                 // Mountain
                 mountainMap[x, y] = Math.Abs(mountainNoise.GetNoise2D(x, y));
-                if (mountainMap[x, y] > mountainNoiseMax) mountainNoiseMax = mountainMap[x ,y];
+                if (mountainMap[x, y] > mountainNoiseMax) mountainNoiseMax = mountainMap[x, y];
             }
         }
 
@@ -143,13 +166,13 @@ public partial class HexTileMap : Node2D
         };
 
         // Forest gen values
-        Vector2 forestGenValues = new Vector2(forestNoiseMax/10 * 7, forestNoiseMax + 0.05f);
+        Vector2 forestGenValues = new Vector2(forestNoiseMax / 10 * 7, forestNoiseMax + 0.05f);
 
         // Desert gen values
-        Vector2 desertGenValues = new Vector2(desertNoiseMax/10 * 6, desertNoiseMax + 0.05f);
+        Vector2 desertGenValues = new Vector2(desertNoiseMax / 10 * 6, desertNoiseMax + 0.05f);
 
         // Mountain gen values
-        Vector2 mountainGenValues = new Vector2(mountainNoiseMax/10 * 5.5f, mountainNoiseMax + 0.05f);
+        Vector2 mountainGenValues = new Vector2(mountainNoiseMax / 10 * 5.5f, mountainNoiseMax + 0.05f);
 
 
         for (int x = 0; x < width; x++)
@@ -189,7 +212,7 @@ public partial class HexTileMap : Node2D
                 baseLayer.SetCell(new Vector2I(x, y), 0, terrainTextures[hex.terrainType]);
 
                 // Set tile borders
-                borderLayer.SetCell(new Vector2I(x, y), 2, new Vector2I(0, 0));                
+                borderLayer.SetCell(new Vector2I(x, y), 2, new Vector2I(0, 0));
             }
         }
 
@@ -204,7 +227,7 @@ public partial class HexTileMap : Node2D
                 h.terrainType = TerrainType.ICE;
                 baseLayer.SetCell(new Vector2I(x, y), 0, terrainTextures[h.terrainType]);
             }
-            
+
             // South pole
             for (int y = height - 1; y > height - 1 - r.Next(maxIce) - 1; y--)
             {
