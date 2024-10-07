@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://cnc10pohva8ie"]
+[gd_scene load_steps=14 format=3 uid="uid://cnc10pohva8ie"]
 
 [ext_resource type="Script" path="res://HexTileMap.cs" id="1_ngyc6"]
 [ext_resource type="Script" path="res://Game.cs" id="1_pvcgg"]
 [ext_resource type="Texture2D" uid="uid://ch06xn8euqx6c" path="res://textures/hex_128.png" id="2_12by3"]
 [ext_resource type="Texture2D" uid="uid://chwta0ndifjrj" path="res://textures/hex_overlays.png" id="3_cvdnc"]
 [ext_resource type="Script" path="res://Camera.cs" id="4_7iw6e"]
+[ext_resource type="PackedScene" uid="uid://b4tb1x5op1kf1" path="res://ui_manager.tscn" id="6_sfvci"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_nlw15"]
 metadata/_preview_in_3d_space_ = true
@@ -70,3 +71,7 @@ tile_set = SubResource("TileSet_4gfv3")
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 script = ExtResource("4_7iw6e")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UIManager" parent="CanvasLayer" instance=ExtResource("6_sfvci")]
