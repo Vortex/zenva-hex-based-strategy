@@ -63,6 +63,8 @@ public partial class HexTileMap : Node2D
         GenerateTerrain();
     }
 
+    Vector2I currentSelectedCell = new Vector2I(-1, -1);
+
     public override void _UnhandledInput(InputEvent @event)
     {
         if (@event is InputEventMouseButton mouse)
@@ -75,9 +77,16 @@ public partial class HexTileMap : Node2D
                 {
                     GD.Print(mapData[mapCoords]);
 
+                    if (mapCoords != currentSelectedCell) overlayLayer.SetCell(currentSelectedCell, -1);
+
                     overlayLayer.SetCell(mapCoords, 0, new Vector2I(0, 1));
+                    currentSelectedCell = mapCoords;
                 }
 
+            }
+            else
+            {
+                overlayLayer.SetCell(currentSelectedCell, -1);
             }
 
         }
