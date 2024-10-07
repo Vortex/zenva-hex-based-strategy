@@ -45,6 +45,10 @@ public partial class HexTileMap : Node2D
     UIManager uiManager;
 
     // Signals
+    [Signal]
+    public delegate void ClickOffMapEventHandler();
+
+    // We are not using Godot signals here, since Hex is not a Godot object
     public delegate void SendHexDataEventHandler(Hex h);
     public event SendHexDataEventHandler SendHexData;
 
@@ -105,6 +109,7 @@ public partial class HexTileMap : Node2D
             else
             {
                 overlayLayer.SetCell(currentSelectedCell, -1);
+                EmitSignal(SignalName.ClickOffMap);
             }
 
         }
