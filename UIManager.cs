@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class UiManager : Node2D
+public partial class UIManager : Node2D
 {
 	PackedScene terrainUiScene;
 
@@ -18,7 +18,7 @@ public partial class UiManager : Node2D
 		if (terrainUi is not null) terrainUi.QueueFree();
 
 		terrainUi = (TerrainTileUi)terrainUiScene.Instantiate();
-		terrainUi.SetHex(h);
 		AddChild(terrainUi);
+		terrainUi.SetHex(h);
 	}
 }

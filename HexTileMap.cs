@@ -41,12 +41,21 @@ public partial class HexTileMap : Node2D
     Dictionary<Vector2I, Hex> mapData;
     Dictionary<TerrainType, Vector2I> terrainTextures;
 
+    // UI
+    UIManager uiManager;
+
+    // Signals
+    public delegate void SendHexDataEventHandler(Hex h);
+    public event SendHexDataEventHandler SendHexData;
+
 
     public override void _Ready()
     {
         baseLayer = GetNode<TileMapLayer>("BaseLayer");
         borderLayer = GetNode<TileMapLayer>("HexBordersLayer");
         overlayLayer = GetNode<TileMapLayer>("SelectionOverlay");
+
+        uiManager = GetNode<UIManager>("/root/Game/CanvasLayer/UIManager");
 
         // Initialize map data
         mapData = new Dictionary<Vector2I, Hex>();
@@ -64,6 +73,9 @@ public partial class HexTileMap : Node2D
 
         GenerateTerrain();
         GenerateResources();
+
+        // UI Signals
+        this.SendHexData += uiManager.SetTerrainUI;
     }
 
     Vector2I currentSelectedCell = new Vector2I(-1, -1);
@@ -78,7 +90,10 @@ public partial class HexTileMap : Node2D
             {
                 if (mouse.ButtonMask == MouseButtonMask.Left)
                 {
+                    Hex h = mapData[mapCoords];
                     GD.Print(mapData[mapCoords]);
+
+                    SendHexData?.Invoke(h);
 
                     if (mapCoords != currentSelectedCell) overlayLayer.SetCell(currentSelectedCell, -1);
 
