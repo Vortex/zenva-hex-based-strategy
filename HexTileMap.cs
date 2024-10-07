@@ -13,6 +13,8 @@ public class Hex
     public readonly Vector2I coordinates;
 
     public TerrainType terrainType;
+    public int food;
+    public int production;
 
     public Hex(Vector2I coordinates)
     {
@@ -21,7 +23,7 @@ public class Hex
 
     public override string ToString()
     {
-        return $"Coordinates: ({this.coordinates.X}, {this.coordinates.Y}), Terraint type: {this.terrainType}";
+        return $"Coordinates: ({this.coordinates.X}, {this.coordinates.Y}), Terraint type: {this.terrainType}. Food: {this.food}, Production: {this.production}";
     }
 }
 
@@ -61,6 +63,7 @@ public partial class HexTileMap : Node2D
         };
 
         GenerateTerrain();
+        GenerateResources();
     }
 
     Vector2I currentSelectedCell = new Vector2I(-1, -1);
@@ -91,6 +94,42 @@ public partial class HexTileMap : Node2D
 
         }
     }
+
+    public void GenerateResources()
+    {
+        Random r = new Random();
+
+
+        // Populate tiles with food and production
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Hex h = mapData[new Vector2I(x, y)];
+
+                switch (h.terrainType)
+                {
+                    case TerrainType.PLAINS:
+                        h.food = r.Next(2, 6);
+                        h.production = r.Next(0, 3);
+                        break;
+                    case TerrainType.FOREST:
+                        h.food = r.Next(1, 4);
+                        h.production = r.Next(2, 6);
+                        break;
+                    case TerrainType.DESERT:
+                        h.food = r.Next(0, 2);
+                        h.production = r.Next(0, 2);
+                        break;
+                    case TerrainType.BEACH:
+                        h.food = r.Next(0, 4);
+                        h.production = r.Next(0, 2);
+                        break;
+                }
+            }
+        }
+    }
+
     public void GenerateTerrain()
     {
         float[,] noiseMap = new float[width, height];
