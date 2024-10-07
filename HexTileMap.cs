@@ -74,6 +74,8 @@ public partial class HexTileMap : Node2D
                 if (mouse.ButtonMask == MouseButtonMask.Left)
                 {
                     GD.Print(mapData[mapCoords]);
+
+                    overlayLayer.SetCell(mapCoords, 0, new Vector2I(0, 1));
                 }
 
             }
