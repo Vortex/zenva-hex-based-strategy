@@ -146,12 +146,12 @@ public partial class HexTileMap : Node2D
                     else
                     {
                         SendHexData?.Invoke(h);
-
-                        if (mapCoords != currentSelectedCell) overlayLayer.SetCell(currentSelectedCell, -1);
-
-                        overlayLayer.SetCell(mapCoords, 0, new Vector2I(0, 1));
-                        currentSelectedCell = mapCoords;
                     }
+
+                    if (mapCoords != currentSelectedCell) overlayLayer.SetCell(currentSelectedCell, -1);
+
+                    overlayLayer.SetCell(mapCoords, 0, new Vector2I(0, 1));
+                    currentSelectedCell = mapCoords;
                 }
 
             }
