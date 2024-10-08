@@ -169,6 +169,42 @@ public partial class HexTileMap : Node2D
         }
     }
 
+    public List<Vector2I> GenerateCivStartingLocations(int numLocations)
+    {
+        List<Vector2I> locations = new List<Vector2I>();
+
+        List<Vector2I> plainsTiles = new List<Vector2I>();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (mapData[new Vector2I(x, y)].terrainType == TerrainType.PLAINS)
+                {
+                    plainsTiles.Add(new Vector2I(x, y));
+                }
+            }
+        }
+
+        Random r = new Random();
+        for (int i = 0; i < numLocations; i++)
+        {
+            Vector2I coord = new Vector2I();
+
+            bool valid = false;
+            int counter = 0;
+
+            while (!valid && counter < 10000)
+            {
+                coord = plainsTiles[r.Next(plainsTiles.Count)];
+
+
+            }
+        }
+
+        return locations;
+    }
+
     public void CreateCity(Civilization civ, Vector2I coords, string name)
     {
         City city = cityScene.Instantiate() as City;
