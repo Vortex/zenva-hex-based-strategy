@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://vg2p2yyam10u"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5gwc2"]
+font_size = 24
+
+[node name="GeneralUi" type="Panel"]
+offset_left = 250.0
+offset_right = 900.0
+offset_bottom = 50.0
+
+[node name="TurnLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 7.0
+offset_right = 90.0
+offset_bottom = 41.0
+text = "Turn: 0"
+label_settings = SubResource("LabelSettings_5gwc2")
+
+[node name="EndTurnButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
