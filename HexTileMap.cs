@@ -61,6 +61,9 @@ public partial class HexTileMap : Node2D
     [Export]
     public int NUM_AI_CIVS = 6;
 
+    [Export]
+    public Color PLAYER_COLOR = new Color(255, 255, 255);
+
     // Signals
     [Signal]
     public delegate void ClickOffMapEventHandler();
@@ -109,7 +112,8 @@ public partial class HexTileMap : Node2D
         List<Vector2I> starts = GenerateCivStartingLocations(NUM_AI_CIVS + 1);
 
         // Generate player civilization
-
+        Civilization playerCiv = CreatePlayerCiv(starts[0]);
+        starts.RemoveAt(0);
 
         // Generate AI civilizations
         GenerateAICivs(starts);
@@ -149,6 +153,24 @@ public partial class HexTileMap : Node2D
             }
 
         }
+    }
+
+    public Civilization CreatePlayerCiv(Vector2I start)
+    {
+        Civilization playerCiv = new Civilization();
+        playerCiv.id = 0;
+        playerCiv.playerCiv = true;
+        playerCiv.territoryColor = new Color(PLAYER_COLOR);
+
+        int id = terrainAtlas.CreateAlternativeTile(terrainTextures[TerrainType.CIV_COLOR_BASE]);
+        terrainAtlas.GetTileData(terrainTextures[TerrainType.CIV_COLOR_BASE], id).Modulate = playerCiv.territoryColor;
+        playerCiv.territoryColorAltTileId = id;
+
+        civs.Add(playerCiv);
+
+        CreateCity(playerCiv, start, "Player City");
+
+        return playerCiv;
     }
 
     public void GenerateResources()
