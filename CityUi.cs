@@ -16,6 +16,7 @@ public partial class CityUi : Panel
 		population = GetNode<Label>("Population");
 		food = GetNode<Label>("Food");
 		production = GetNode<Label>("Production");
+
 	}
 
 	public void SetCityUI(City city)

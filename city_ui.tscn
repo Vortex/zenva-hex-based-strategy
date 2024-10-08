@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqwvedaln5mkl"]
+[gd_scene load_steps=4 format=3 uid="uid://cqwvedaln5mkl"]
 
 [ext_resource type="Texture2D" uid="uid://cnhj06xflbi7e" path="res://textures/city_painting.jpg" id="1_2oj8j"]
+[ext_resource type="Script" path="res://CityUi.cs" id="1_y6aau"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dqntm"]
 font_size = 24
@@ -8,6 +9,7 @@ font_size = 24
 [node name="CityUI" type="Panel"]
 offset_right = 250.0
 offset_bottom = 648.0
+script = ExtResource("1_y6aau")
 metadata/_edit_vertical_guides_ = [9.0]
 
 [node name="TerrainImage" type="TextureRect" parent="."]
