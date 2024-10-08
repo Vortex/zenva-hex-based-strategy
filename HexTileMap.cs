@@ -124,6 +124,7 @@ public partial class HexTileMap : Node2D
 
         // UI Signals
         this.SendHexData += uiManager.SetTerrainUI;
+        uiManager.EndTurn += ProcessTurn;
     }
 
     Vector2I currentSelectedCell = new Vector2I(-1, -1);
@@ -162,6 +163,11 @@ public partial class HexTileMap : Node2D
             }
 
         }
+    }
+
+    public void ProcessTurn()
+    {
+        GD.Print("Turn ended");
     }
 
     public Civilization CreatePlayerCiv(Vector2I start)

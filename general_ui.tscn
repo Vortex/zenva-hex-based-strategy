@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://vg2p2yyam10u"]
+[gd_scene load_steps=3 format=3 uid="uid://vg2p2yyam10u"]
+
+[ext_resource type="Script" path="res://GeneralUi.cs" id="1_iw5fe"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5gwc2"]
 font_size = 24
@@ -7,6 +9,7 @@ font_size = 24
 offset_left = 250.0
 offset_right = 900.0
 offset_bottom = 50.0
+script = ExtResource("1_iw5fe")
 
 [node name="TurnLabel" type="Label" parent="."]
 layout_mode = 0
@@ -19,5 +22,8 @@ label_settings = SubResource("LabelSettings_5gwc2")
 
 [node name="EndTurnButton" type="Button" parent="."]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 276.0
+offset_top = 9.0
+offset_right = 354.0
+offset_bottom = 40.0
+text = "End Turn"
