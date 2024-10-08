@@ -72,7 +72,8 @@ noise = SubResource("FastNoiseLite_nlw15")
 
 [node name="HexTileMap" type="Node2D" parent="."]
 script = ExtResource("1_ngyc6")
-height = 100
+width = 50
+height = 50
 
 [node name="BaseLayer" type="TileMapLayer" parent="HexTileMap"]
 tile_set = SubResource("TileSet_5g6fa")
