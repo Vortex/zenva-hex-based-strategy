@@ -18,6 +18,8 @@ public class Hex
 
     public City ownerCity;
 
+    public bool isCityCenter = false;
+
     public Hex(Vector2I coordinates)
     {
         this.coordinates = coordinates;
@@ -48,6 +50,10 @@ public partial class HexTileMap : Node2D
 
     // UI
     UIManager uiManager;
+
+    // Gameplay data
+    public Dictionary<Vector2I, City> cities;
+    public List<Civilization> civs;
 
     // Signals
     [Signal]
@@ -84,6 +90,10 @@ public partial class HexTileMap : Node2D
 
         GenerateTerrain();
         GenerateResources();
+
+        // Civilizations and cities gen
+        civs = new List<Civilization>();
+        cities = new Dictionary<Vector2I, City>();
 
         // UI Signals
         this.SendHexData += uiManager.SetTerrainUI;
@@ -175,6 +185,7 @@ public partial class HexTileMap : Node2D
         // Set the coordinates of the city
         city.centerCoordinates = coords;
         city.Position = baseLayer.MapToLocal(coords);
+        mapData[coords].isCityCenter = true;
 
         // Adding territory to the city
         city.AddTerritory(new List<Hex> { mapData[coords] });
@@ -186,6 +197,20 @@ public partial class HexTileMap : Node2D
             if (h.ownerCity == null)
             {
                 city.AddTerritory(new List<Hex> { h });
+            }
+        }
+
+        cities[coords] = city;
+    }
+
+    public void UpdateCivTerritoryMap(Civilization civ)
+    {
+        foreach (City c in civ.cities)
+        {
+            foreach (Hex h in c.territory)
+            {
+                // baseLayer.SetCell(h.coordinates, 1, new Vector2I(0, 0));
+
             }
         }
     }
