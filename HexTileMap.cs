@@ -197,12 +197,40 @@ public partial class HexTileMap : Node2D
             while (!valid && counter < 10000)
             {
                 coord = plainsTiles[r.Next(plainsTiles.Count)];
-
-
+                valid = isValidLocation(coord, locations);
+                counter++;
             }
+
+            plainsTiles.Remove(coord);
+            foreach (Hex h in GetSurroundingHexes(coord))
+            {
+                foreach (Hex j in GetSurroundingHexes(h.coordinates))
+                {
+                    foreach (Hex k in GetSurroundingHexes(j.coordinates))
+                    {
+                        plainsTiles.Remove(h.coordinates);
+                        plainsTiles.Remove(j.coordinates);
+                        plainsTiles.Remove(k.coordinates);
+                    }
+                }
+            }
+
+            locations.Add(coord);
         }
 
         return locations;
+    }
+
+    private bool isValidLocation(Vector2I coord, List<Vector2I> locations)
+    {
+        if (coord.X < 3 || coord.X > width - 3 || coord.Y < 3 || coord.Y > height - 3) return false;
+
+        foreach (Vector2I loc in locations)
+        {
+            if (Math.Abs(coord.X - loc.X) < 20 && Math.Abs(coord.Y - loc.Y) < 20) return false;
+        }
+
+        return true;
     }
 
     public void CreateCity(Civilization civ, Vector2I coords, string name)
