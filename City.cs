@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public partial class City : Node2D
 {
+
+	public static Dictionary<Hex, City> invalidTiles = new Dictionary<Hex, City>();
+
 	public HexTileMap map;
 	public Vector2I centerCoordinates;
 
@@ -12,11 +15,16 @@ public partial class City : Node2D
 
 	public Civilization civ;
 
+	// Gameplay constant
+	public static int POPULATION_THRESHOLD_INCREASE = 15;
+
 	// City name
 	public string name;
 
 	// Population
 	public int population = 1;
+	public int populationGrowthThreshold;
+	public int populationGrowthTracker;
 
 	// Resources
 	public int totalFood;
@@ -37,9 +45,18 @@ public partial class City : Node2D
 		borderTilePool = new List<Hex>();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public void ProcessTurn()
 	{
+		populationGrowthTracker += totalFood;
+		if (populationGrowthTracker > populationGrowthThreshold)
+		{
+			population++;
+			populationGrowthTracker = 0;
+			populationGrowthThreshold += POPULATION_THRESHOLD_INCREASE;
+
+			// Grow territory
+
+		}
 	}
 
 	public void AddTerritory(List<Hex> territoryToAdd)
