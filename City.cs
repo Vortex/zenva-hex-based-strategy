@@ -64,9 +64,51 @@ public partial class City : Node2D
 		foreach (Hex h in territoryToAdd)
 		{
 			h.ownerCity = this;
+
+			// Add new border hexes to the border pool
+			AddValidNeighborsToBorderPool(h);
+
 		}
 		territory.AddRange(territoryToAdd);
 		CalculateTerritoryResourceTotals();
+	}
+
+	public void AddValidNeighborsToBorderPool(Hex h)
+	{
+		List<Hex> neighbors = map.GetSurroundingHexes(h.coordinates);
+
+		foreach (Hex n in neighbors)
+		{
+			if (IsValidNeighborTile(n))
+			{
+				borderTilePool.Add(n);
+			}
+
+			invalidTiles[n] = this;
+		}
+	}
+
+	public bool IsValidNeighborTile(Hex h)
+	{
+		if (h.terrainType == TerrainType.WATER ||
+		h.terrainType == TerrainType.SHALLOW_WATER ||
+		h.terrainType == TerrainType.ICE ||
+		h.terrainType == TerrainType.MOUNTAIN)
+		{
+			return false;
+		}
+
+		if (h.ownerCity != null && h.ownerCity.civ != null)
+		{
+			return false;
+		}
+
+		if (invalidTiles.ContainsKey(h) && invalidTiles[h] != this)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	public void CalculateTerritoryResourceTotals()
