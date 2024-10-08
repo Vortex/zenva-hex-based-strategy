@@ -58,7 +58,7 @@ public partial class HexTileMap : Node2D
 
     public override void _Ready()
     {
-        cityScene = ResourceLoader.Load<PackedScene>("City.tscn");
+        cityScene = ResourceLoader.Load<PackedScene>("city.tscn");
 
         baseLayer = GetNode<TileMapLayer>("BaseLayer");
         borderLayer = GetNode<TileMapLayer>("HexBordersLayer");
