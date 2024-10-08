@@ -29,6 +29,9 @@ public class Hex
 
 public partial class HexTileMap : Node2D
 {
+
+    PackedScene cityScene;
+
     [Export]
     public int width = 100;
 
@@ -55,6 +58,8 @@ public partial class HexTileMap : Node2D
 
     public override void _Ready()
     {
+        cityScene = ResourceLoader.Load<PackedScene>("City.tscn");
+
         baseLayer = GetNode<TileMapLayer>("BaseLayer");
         borderLayer = GetNode<TileMapLayer>("HexBordersLayer");
         overlayLayer = GetNode<TileMapLayer>("SelectionOverlay");
@@ -148,6 +153,11 @@ public partial class HexTileMap : Node2D
                 }
             }
         }
+    }
+
+    public void CreateCity(Civilization civ, Vector2I coords, string name)
+    {
+        City city = cityScene.Instantiate() as City;
     }
 
     public void GenerateTerrain()
