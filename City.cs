@@ -10,6 +10,8 @@ public partial class City : Node2D
 	public List<Hex> territory;
 	public List<Hex> borderTilePool;
 
+	public Civilization civ;
+
 	// City name
 	public string name;
 
