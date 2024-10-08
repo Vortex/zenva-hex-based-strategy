@@ -16,6 +16,8 @@ public class Hex
     public int food;
     public int production;
 
+    public City ownerCity;
+
     public Hex(Vector2I coordinates)
     {
         this.coordinates = coordinates;
@@ -165,14 +167,54 @@ public partial class HexTileMap : Node2D
         AddChild(city);
 
         // Set the color of the city's icon
+        city.SetIconColor(civ.territoryColor);
 
         // Set the city's name
+        city.SetCityName(name);
 
         // Set the coordinates of the city
         city.centerCoordinates = coords;
         city.Position = baseLayer.MapToLocal(coords);
 
         // Adding territory to the city
+        city.AddTerritory(new List<Hex> { mapData[coords] });
+
+        // Add the surrounding territory to the city
+        List<Hex> surrounding = GetSurroundingHexes(coords);
+        foreach (Hex h in surrounding)
+        {
+            if (h.ownerCity == null)
+            {
+                city.AddTerritory(new List<Hex> { h });
+            }
+        }
+    }
+
+    public List<Hex> GetSurroundingHexes(Vector2I coords)
+    {
+        List<Hex> hexes = new List<Hex>();
+
+        foreach (Vector2I coord in baseLayer.GetSurroundingCells(coords))
+        {
+            if (HexInBounds(coord))
+            {
+                hexes.Add(mapData[coord]);
+            }
+        }
+
+        return hexes;
+    }
+
+    public bool HexInBounds(Vector2I coords)
+    {
+        if (
+            coords.X < 0 ||
+            coords.X >= width ||
+            coords.Y < 0 ||
+            coords.Y >= height
+        ) return false;
+
+        return true;
     }
 
     public void GenerateTerrain()
