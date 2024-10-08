@@ -9,6 +9,7 @@ public partial class Civilization : Node
 	public List<City> cities;
 
 	public Color territoryColor;
+	public int territoryColorAltTileId;
 
 	public string name;
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 public enum TerrainType
 {
-    PLAINS, WATER, DESERT, MOUNTAIN, ICE, SHALLOW_WATER, FOREST, BEACH
+    PLAINS, WATER, DESERT, MOUNTAIN, ICE, SHALLOW_WATER, FOREST, BEACH, CIV_COLOR_BASE
 }
 
 public class Hex
@@ -43,7 +43,7 @@ public partial class HexTileMap : Node2D
     public int height = 60;
 
     // Map data
-    TileMapLayer baseLayer, borderLayer, overlayLayer;
+    TileMapLayer baseLayer, borderLayer, overlayLayer, civColorsLayer;
 
     Dictionary<Vector2I, Hex> mapData;
     Dictionary<TerrainType, Vector2I> terrainTextures;
@@ -71,6 +71,7 @@ public partial class HexTileMap : Node2D
         baseLayer = GetNode<TileMapLayer>("BaseLayer");
         borderLayer = GetNode<TileMapLayer>("HexBordersLayer");
         overlayLayer = GetNode<TileMapLayer>("SelectionOverlay");
+        civColorsLayer = GetNode<TileMapLayer>("CivColorsLayer");
 
         uiManager = GetNode<UIManager>("/root/Game/CanvasLayer/UIManager");
 
@@ -86,6 +87,7 @@ public partial class HexTileMap : Node2D
             { TerrainType.BEACH, new Vector2I(0, 2)},
             { TerrainType.FOREST, new Vector2I(1, 3)},
             { TerrainType.ICE, new Vector2I(0, 3)},
+            { TerrainType.CIV_COLOR_BASE, new Vector2I(0, 3)}
         };
 
         GenerateTerrain();
@@ -209,8 +211,7 @@ public partial class HexTileMap : Node2D
         {
             foreach (Hex h in c.territory)
             {
-                // baseLayer.SetCell(h.coordinates, 1, new Vector2I(0, 0));
-
+                civColorsLayer.SetCell(h.coordinates, 0, terrainTextures[TerrainType.CIV_COLOR_BASE], civ.territoryColorAltTileId);
             }
         }
     }
