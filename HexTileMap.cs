@@ -45,6 +45,9 @@ public partial class HexTileMap : Node2D
     // Map data
     TileMapLayer baseLayer, borderLayer, overlayLayer, civColorsLayer;
 
+    // Tile atlas
+    TileSetAtlasSource terrainAtlas;
+
     Dictionary<Vector2I, Hex> mapData;
     Dictionary<TerrainType, Vector2I> terrainTextures;
 
@@ -54,6 +57,9 @@ public partial class HexTileMap : Node2D
     // Gameplay data
     public Dictionary<Vector2I, City> cities;
     public List<Civilization> civs;
+
+    [Export]
+    public int NUM_AI_CIVS = 6;
 
     // Signals
     [Signal]
@@ -74,6 +80,8 @@ public partial class HexTileMap : Node2D
         civColorsLayer = GetNode<TileMapLayer>("CivColorsLayer");
 
         uiManager = GetNode<UIManager>("/root/Game/CanvasLayer/UIManager");
+
+        this.terrainAtlas = civColorsLayer.TileSet.GetSource(0) as TileSetAtlasSource;
 
         // Initialize map data
         mapData = new Dictionary<Vector2I, Hex>();
@@ -96,6 +104,15 @@ public partial class HexTileMap : Node2D
         // Civilizations and cities gen
         civs = new List<Civilization>();
         cities = new Dictionary<Vector2I, City>();
+
+        // Generate starting locations for civs
+        List<Vector2I> starts = GenerateCivStartingLocations(NUM_AI_CIVS + 1);
+
+        // Generate player civilization
+
+
+        // Generate AI civilizations
+        GenerateAICivs(starts);
 
         // UI Signals
         this.SendHexData += uiManager.SetTerrainUI;
@@ -169,6 +186,33 @@ public partial class HexTileMap : Node2D
         }
     }
 
+    public void GenerateAICivs(List<Vector2I> civStarts)
+    {
+        for (int i = 0; i < civStarts.Count; i++)
+        {
+            Civilization currentCiv = new Civilization
+            {
+                id = i + 1,
+                playerCiv = false,
+            };
+
+            // Assign a random color
+            currentCiv.SetRandomColor();
+
+            // Create ALT tiles
+            int id = terrainAtlas.CreateAlternativeTile(terrainTextures[TerrainType.CIV_COLOR_BASE]);
+            terrainAtlas.GetTileData(terrainTextures[TerrainType.CIV_COLOR_BASE], id).Modulate = currentCiv.territoryColor;
+
+            currentCiv.territoryColorAltTileId = id;
+
+            // Create starting city
+            CreateCity(currentCiv, civStarts[i], $"City {civStarts[i].X}");
+
+            civs.Add(currentCiv);
+
+        }
+    }
+
     public List<Vector2I> GenerateCivStartingLocations(int numLocations)
     {
         List<Vector2I> locations = new List<Vector2I>();
@@ -197,7 +241,7 @@ public partial class HexTileMap : Node2D
             while (!valid && counter < 10000)
             {
                 coord = plainsTiles[r.Next(plainsTiles.Count)];
-                valid = isValidLocation(coord, locations);
+                valid = IsValidLocation(coord, locations);
                 counter++;
             }
 
@@ -221,13 +265,18 @@ public partial class HexTileMap : Node2D
         return locations;
     }
 
-    private bool isValidLocation(Vector2I coord, List<Vector2I> locations)
+    private bool IsValidLocation(Vector2I coord, List<Vector2I> locations)
     {
-        if (coord.X < 3 || coord.X > width - 3 || coord.Y < 3 || coord.Y > height - 3) return false;
-
-        foreach (Vector2I loc in locations)
+        if (coord.X < 3 || coord.X > width - 3 ||
+            coord.Y < 3 || coord.Y > height - 3)
         {
-            if (Math.Abs(coord.X - loc.X) < 20 && Math.Abs(coord.Y - loc.Y) < 20) return false;
+            return false;
+        }
+
+        foreach (Vector2I l in locations)
+        {
+            if (Math.Abs(coord.X - l.X) < 20 || Math.Abs(coord.Y - l.Y) < 20)
+                return false;
         }
 
         return true;
@@ -265,6 +314,8 @@ public partial class HexTileMap : Node2D
                 city.AddTerritory(new List<Hex> { h });
             }
         }
+
+        UpdateCivTerritoryMap(civ);
 
         cities[coords] = city;
     }

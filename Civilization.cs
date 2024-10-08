@@ -20,4 +20,11 @@ public partial class Civilization : Node
 		cities = new List<City>();
 	}
 
+	public void SetRandomColor()
+	{
+		Random r = new Random();
+		territoryColor = new Color(r.Next(255) / 255.0f, r.Next(255) / 255.0f, r.Next(255) / 255.0f);
+	}
+
 }
+
