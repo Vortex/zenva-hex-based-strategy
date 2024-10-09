@@ -47,6 +47,8 @@ public partial class City : Node2D
 
 	public void ProcessTurn()
 	{
+		CleanUpBorderPool();
+
 		populationGrowthTracker += totalFood;
 		if (populationGrowthTracker > populationGrowthThreshold)
 		{
@@ -55,7 +57,38 @@ public partial class City : Node2D
 			populationGrowthThreshold += POPULATION_THRESHOLD_INCREASE;
 
 			// Grow territory
+			AddRandomNewTile();
+			map.UpdateCivTerritoryMap(civ);
+		}
+	}
 
+	public void CleanUpBorderPool()
+	{
+		List<Hex> toRemove = new List<Hex>();
+		foreach (Hex b in borderTilePool)
+		{
+			if (invalidTiles.ContainsKey(b) && invalidTiles[b] != this)
+			{
+				toRemove.Add(b);
+			}
+		}
+
+		foreach (Hex b in toRemove)
+		{
+			borderTilePool.Remove(b);
+		}
+	}
+
+	public void AddRandomNewTile()
+	{
+		if (borderTilePool.Count > 0)
+		{
+			Random r = new Random();
+
+			int index = r.Next(borderTilePool.Count);
+			this.AddTerritory(new List<Hex> { borderTilePool[index] });
+
+			borderTilePool.RemoveAt(index);
 		}
 	}
 

@@ -26,5 +26,13 @@ public partial class Civilization : Node
 		territoryColor = new Color(r.Next(255) / 255.0f, r.Next(255) / 255.0f, r.Next(255) / 255.0f);
 	}
 
+	public void ProcessTurn()
+	{
+		foreach (City city in cities)
+		{
+			city.ProcessTurn();
+		}
+	}
+
 }
 

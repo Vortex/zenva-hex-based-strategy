@@ -28,4 +28,13 @@ public partial class CityUi : Panel
 		food.Text = $"Food: {city.totalFood}";
 		production.Text = $"Production: {city.totalProduction}";
 	}
+
+	public void Refresh()
+	{
+		cityName.Text = this.city.name;
+
+		population.Text = $"Population: {city.population}";
+		food.Text = $"Food: {city.totalFood}";
+		production.Text = $"Production: {city.totalProduction}";
+	}
 }
